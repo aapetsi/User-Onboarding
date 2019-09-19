@@ -13,18 +13,22 @@ const User = ({ users }) => {
     <div>
       <h1>View members</h1>
       <table>
-        <tr>
-          <th>name</th>
-          <th>email</th>
-          <th>date</th>
-        </tr>
-        {users.map(user => (
-          <tr key={user.id}>
-            <td>{user.name}</td>
-            <td>{user.email}</td>
-            <td>{user.createdAt}</td>
+        <thead>
+          <tr>
+            <th>name</th>
+            <th>email</th>
+            <th>date</th>
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {users.map(user => (
+            <tr key={user.id}>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>{user.createdAt}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );
