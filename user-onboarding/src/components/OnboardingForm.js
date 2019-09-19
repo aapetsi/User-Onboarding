@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
 import * as yup from "yup";
+import User from "./User";
 
 const membersApi = "https://reqres.in/api/users";
 
 const OnboardingForm = () => {
+  const [users, setUsers] = useState([{}]);
   const initialMemberForm = {
     name: "",
     email: "",
@@ -29,6 +31,8 @@ const OnboardingForm = () => {
     axios
       .post(membersApi, newMember)
       .then(res => {
+        let newUser = res.data;
+        setUsers([...users, newUser]);
         console.log(res.data);
         actions.resetForm();
       })
@@ -60,43 +64,50 @@ const OnboardingForm = () => {
   };
 
   return (
-    <Formik
-      validationSchema={validationSchema}
-      validate={validateForm}
-      initialValues={initialMemberForm}
-      onSubmit={handleFormSubmit}
-      render={props => {
-        return (
-          <Form>
-            <div>
-              <label>
-                Name
-                <Field name="name" type="text" placeholder="Name" />
-                <ErrorMessage name="name" component="div" />
-              </label>
-            </div>
+    <div>
+      <Formik
+        validationSchema={validationSchema}
+        validate={validateForm}
+        initialValues={initialMemberForm}
+        onSubmit={handleFormSubmit}
+        render={props => {
+          return (
+            <Form>
+              <div>
+                <label>
+                  Name
+                  <Field name="name" type="text" placeholder="Name" />
+                  <ErrorMessage name="name" component="div" />
+                </label>
+              </div>
 
-            <div>
-              <label>
-                Email
-                <Field name="email" type="email" placeholder="Email" />
-                <ErrorMessage name="email" component="div" />
-              </label>
-            </div>
+              <div>
+                <label>
+                  Email
+                  <Field name="email" type="email" placeholder="Email" />
+                  <ErrorMessage name="email" component="div" />
+                </label>
+              </div>
 
-            <div>
-              <label>
-                Password
-                <Field name="password" type="password" placeholder="Password" />
-                <ErrorMessage name="password" component="div" />
-              </label>
-            </div>
+              <div>
+                <label>
+                  Password
+                  <Field
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                  />
+                  <ErrorMessage name="password" component="div" />
+                </label>
+              </div>
 
-            <button type="submit">Submit</button>
-          </Form>
-        );
-      }}
-    />
+              <button type="submit">Submit</button>
+            </Form>
+          );
+        }}
+      />
+      <User users={users} />
+    </div>
   );
 };
 
